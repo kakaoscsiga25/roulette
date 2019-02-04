@@ -22,4 +22,24 @@ std::string num2string(const T& num, int precision = 2)
     return ss.str();
 }
 
+enum StringColor
+{
+    NORMAL = 0,
+    RED = 1,
+    GREEN = 2,
+};
+
+std::string coloringString(const std::string& str, StringColor color)
+{
+    std::string prefix = "";
+    if (color == StringColor::RED)
+        prefix = "\033[1;31m";
+    if (color == StringColor::GREEN)
+        prefix = "\033[1;32m";
+
+    std::string postfix = "\033[0m";
+
+    return prefix + str + postfix;
+}
+
 #endif // UTILS_HPP
