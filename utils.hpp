@@ -42,4 +42,6 @@ std::string coloringString(const std::string& str, StringColor color)
     return prefix + str + postfix;
 }
 
+
+
 #endif // UTILS_HPP
