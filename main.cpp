@@ -388,5 +388,15 @@ std::vector<Group> createGroups(const std::vector<Field>& fields)
         group.rightFields.clear();
     }
 
+    // Sixes
+    for (int i = 1; i < FIELD_NUMBER-4; i+=3)
+    {
+        group.ID = "SIX [" + std::to_string(i) + "," + std::to_string(i+3) + "]";
+        for (int ii = 0; i < 6; ii++)
+            group.rightFields.push_back(&fields.at(i+ii));
+        groups.push_back(group);
+        group.rightFields.clear();
+    }
+
     return groups;
 }
