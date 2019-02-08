@@ -58,10 +58,18 @@ struct Group
                 double P1 = groupProbability();
                 double P2 = (1.-groupProbability()) * groupProbability();
                 // Find N
-                N = 0;
+                N = std::floor((h2-h1) / (P1-P2));
                 bool run = true;
-                while (P1*N + h1 < P2*N + h2)
-                    N++;
+//                int t = 0;
+//                while (P1*t + h1 < P2*t + h2)
+//                    t++;
+//                if (t != N && t != N+1)
+//                {
+//                    std::cerr << t << " " << N << "\n";
+//                    throw std::runtime_error("NOPE");
+//                }
+
+//                n < (h2-h1) / (p1-p2)
             }
             Ns.push_back(N);
         }
@@ -88,6 +96,7 @@ struct Group
 //        double expValue = N * (h2-h1) / multip;
 //        double expValue = (h2-h1)*multip - N;
         double expValue = static_cast<double>(N) / multip;
+//        double expValue = static_cast<double>(N);
         return expValue;
     }
 

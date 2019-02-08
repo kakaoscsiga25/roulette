@@ -14,14 +14,17 @@ int main()
     for (int i = 0; i < FIELD_NUMBER; i++)
         fields.push_back(Field(i));
 
+//    int all = 0;
+//    for (int x=0;x<1000;x++)
+    {
+
     // Create groups
     std::vector<Group> groups = createGroups(fields);
-    std::vector<bool> bet(groups.size(), false);
+    std::vector<int> bet(groups.size(), 0);
 
     // RUN
-    size_t spinCounter = 0;
     int MONEY = 0;
-    for (int i = 0; i < 1000000; i++)
+    for (size_t spinCounter = 0; spinCounter < 1000000; spinCounter++)
     {
         // Bet
         bool cont = false;
@@ -32,16 +35,17 @@ int main()
             double val = g.expValue();
             if (val > 0)
             {
-                bet[i] = true;
-                std::cerr << "Bet for: " << g.ID << "\n";
+                bet[i] = 1;
+//                std::cerr << "Bet for: " << g.ID << "\n";
             }
             else
-                bet[i] = false;
+                bet[i] = 0;
+            MONEY -= bet[i];
         }
 
         // hacky
         int item = rand()%FIELD_NUMBER;
-        spinCounter++;
+//        spinCounter++;
 
 
         // hack
@@ -53,16 +57,16 @@ int main()
         for (auto& g : groups)
         {
             g.update(item);
-            if (g.counter > g.winHistory.size())
-                cont = true;
+//            if (g.counter > g.winHistory.size())
+//                cont = true;
         }
-        if (cont)
-            continue;
+//        if (cont)
+//            continue;
 
         // sort group items
 //        std::sort(groups.begin(), groups.end(), [&] (const Group& g1, const Group& g2) { return 0; } );
 
-        std::cerr << spinCounter << ". spin " << item << "\n";
+        std::cerr << spinCounter << ". spin: " << item << "\n";
 
         for (size_t i = 0; i < groups.size(); i++)
         {
@@ -73,14 +77,14 @@ int main()
             if (bet[i])
             {
                 if (win)
-                    MONEY += g.multiplier();
-                else
-                    MONEY -= 1;
+                    MONEY += g.multiplier() * bet[i];
             }
         }
         std::cerr << "My money: " << MONEY << "\n\n";
     }
-
+//    all += MONEY;
+//    std::cerr << all << "\n";
+    }
 
 
 
