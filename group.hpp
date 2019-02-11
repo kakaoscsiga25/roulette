@@ -34,6 +34,8 @@ struct Group
             size_t idx = counter;
             if (idx < winHistory.size())
                 winHistory.at(idx)++;
+            else
+                outOfHistory++;
             counter = 0;
         }
         else
@@ -86,18 +88,52 @@ struct Group
         uint h2 = winHistory.at(counter+1);
         if (h1 >= h2)
             return 0;
+        uint h0 = outOfHistory;
+        for (size_t i = counter+2; i < winHistory.size(); i++)
+            h0 += winHistory.at(i);
 
         std::vector<int> Ns = calcNs();
         int N = Ns.at(counter);
         double multip = multiplier();
 
-        const int W = 100;
+        double p1 = groupProbability();
+        double p2 = (1.-groupProbability())*groupProbability();
 
-//        double expValue = N * (h2-h1) / multip;
-//        double expValue = (h2-h1)*multip - N;
-        double expValue = static_cast<double>(N) / multip;
-//        double expValue = static_cast<double>(N);
-        return expValue;
+        double po = (1.-p1)*(1.-p2);
+
+        double pc = p1 + p2;
+
+//        double e12 = (h1+h2)*(1.-pc);
+        double e12 = (h0)*(1.-po);
+//        std::cerr << h1+h2 << " " << e12 << "\n";
+//        std::cerr << h0 << "\n";
+
+        const int W = 100;
+        const int E = -1; // in box estimation
+
+
+        if (std::floor(e12)+E > h1+h2)
+        {
+            double loose = 1. - groupProbability();
+//            double expValue = static_cast<double>(rightFields.size()) / (FIELD_NUMBER-1);
+
+            int expWin = (h2-h1);
+            int expSpin = W / (1.-po) + (W);
+
+            if (expWin * multip > expSpin)
+                return 1;
+            else
+                return 0;
+//                throw std::runtime_error("asd");
+
+            //        double expValue = N * (h2-h1) / multip;
+            //        double expValue = (h2-h1)*multip - N;
+            double expValue = static_cast<double>(N) / multip;
+            //        double expValue = static_cast<double>(N);
+            return expValue;
+        }
+//        else
+            return 0;
     }
 
     void print() const
@@ -118,6 +154,7 @@ struct Group
     std::string ID;
     std::vector<const Field*> rightFields;
     std::vector<uint> winHistory;
+    ulong outOfHistory = 0;
 };
 
 

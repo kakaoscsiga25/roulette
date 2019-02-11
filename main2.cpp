@@ -14,8 +14,8 @@ int main()
     for (int i = 0; i < FIELD_NUMBER; i++)
         fields.push_back(Field(i));
 
-//    int all = 0;
-//    for (int x=0;x<1000;x++)
+    int all = 0;
+    for (int x=0;x<1000;x++)
     {
 
     // Create groups
@@ -66,7 +66,7 @@ int main()
         // sort group items
 //        std::sort(groups.begin(), groups.end(), [&] (const Group& g1, const Group& g2) { return 0; } );
 
-        std::cerr << spinCounter << ". spin: " << item << "\n";
+//        std::cerr << spinCounter << ". spin: " << item << "\n";
 
         for (size_t i = 0; i < groups.size(); i++)
         {
@@ -80,10 +80,10 @@ int main()
                     MONEY += g.multiplier() * bet[i];
             }
         }
-        std::cerr << "My money: " << MONEY << "\n\n";
+//        std::cerr << "My money: " << MONEY << "\n\n";
     }
-//    all += MONEY;
-//    std::cerr << all << "\n";
+    all += MONEY;
+    std::cerr << all << "\n";
     }
 
 
